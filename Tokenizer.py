@@ -2,11 +2,12 @@ import math
 from Operator import is_op, find
 
 class Tokenizer:
-    """Takes an expression in infix notation and converts it to the Reverse
-       Polish Notation (RPN) using Dijkstra's Shunting Yard Algorithm"""
-       
-    # Shunting yard algorithm
+    """Has a single method which tokenizes the given input and returns
+    the resulting output. Not to be confused with Britney Spears song!"""
+    
     def shunting(self, exp):
+        """Takes an expression in infix notation and converts it to the Reverse
+        Polish Notation (RPN) using Dijkstra's Shunting Yard Algorithm."""
         stack = []
         output = []
         tempString = ""
@@ -14,8 +15,10 @@ class Tokenizer:
         exp = exp.replace(' ','')
         # Mathematical Sin, Cos, Tan functions, decimals and PI are allowed
         validChars = set("sincostanpi.")
+        validOutput = True
         functions = {"sin", "cos", "tan"}
-        
+
+        # Tokenize the expression char by char
         for i in exp:
             # Store chars to see if they're number, function or constant 
             if i.isdigit() or i in validChars:
@@ -34,7 +37,10 @@ class Tokenizer:
                     tempString = ""
 
                 # Find what operator it is
-                op = find(i)        
+                op = find(i)
+                
+                # Remove operators from stack onto output according to
+                # their associativity and precedence
                 while len(stack) > 0 and i != "(" and i != ")" and \
                       ((op.ass == "l" and (op.pre <= find(stack[-1]).pre)) or \
                        (op.ass == "r" and (op.pre < find(stack[-1]).pre))):
@@ -51,21 +57,26 @@ class Tokenizer:
                         stack.pop()
 
                     if len(stack) == 0:
-                        print("Error: Mismatched parantheses!")
+                        output = "Error: Mismatched parantheses!"
+                        validOutput = False
                         break
             else:
-                print("Invalid input!")
+                output = "Invalid input!"
+                validOutput = False
                 break
 
-            print("Output: ", output)
-            print("Stack: ", stack)
-        
-        if len(tempString) > 0:
+        # Remaining tokens are added to output (if any)
+        if len(tempString) > 0 and validOutput:
             if tempString == "pi":
                 tempString = math.pi
             output.append(float(tempString))
 
+        # Remaining operators in the stack are added to the output.
         while len(stack) > 0:
-            output.append(stack.pop())
+            if stack[-1] == "(" or stack[-1] == ")":
+                output = "Invalid input!"
+                break
+            if validOutput:
+                output.append(stack.pop())
         
         return output
