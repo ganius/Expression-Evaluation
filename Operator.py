@@ -16,8 +16,8 @@ power_of = Operator("r", "^", 3, 2)
 left_paran = Operator("l", "(", -1, 0)
 right_paran = Operator("l", ")", -1, 0)
 
-allOperators = [plus, minus, divide, modulus, multiply,
-                power_of, left_paran, right_paran]
+allOperators = (plus, minus, divide, modulus, multiply,
+                power_of, left_paran, right_paran)
 
 def is_op(symbol):
     for op in allOperators:
