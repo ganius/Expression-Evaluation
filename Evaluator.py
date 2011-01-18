@@ -6,7 +6,6 @@ class Evaluator:
     def evaluate(self, tokenList):
         """Takes an expression in RPN notation and evaluates it"""
         tempStack = []
-        tokenList.reverse()
         
         for i in tokenList:
             if isinteger(i):
@@ -15,6 +14,7 @@ class Evaluator:
                 op = find(i)
                 if len(tempStack) < op.ops:
                     print("Insufficient values!")
+                    break
                 else:
                     result = arithmetic(tempStack.pop(), tempStack.pop(), i)
                     tokenList.append(result)
