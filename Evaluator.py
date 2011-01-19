@@ -6,9 +6,15 @@ class Evaluator:
     def evaluate(self, tokenList):
         """Takes an expression in RPN notation and evaluates it"""
         tempStack = []
+        try:
+            tokenList.reverse()
+        except AttributeError:
+            result = "Invalid token list"
+            return result
         
-        for i in tokenList:
-            if isinteger(i):
+        while len(tokenList) > 0:
+            i = tokenList.pop()
+            if isFloat(i):
                 tempStack.append(i)
             else:
                 op = find(i)
@@ -16,34 +22,36 @@ class Evaluator:
                     print("Insufficient values!")
                     break
                 else:
-                    result = arithmetic(tempStack.pop(), tempStack.pop(), i)
-                    tokenList.append(result)
+                    value = arithmetic(tempStack.pop(), tempStack.pop(), i)
+                    tokenList.append(value)
                 
-        if len(tokenList) == 1:
-            return tokenList[0]
+            if len(tokenList) == 1 and tempStack == []:
+                result = tokenList[0]
+                return result
 
-        elif len(tokenList) > 1:
-            print("User input has too many values")
+        if len(tokenList) > 1:
+            result = "User input has too many values"
+            return result
 
-    def arithmetic(self, num1, num2, op):
-        """Arithmetic operations are handled here. No evil eval()"""
-        if op == "+":
-            value = num1 + num2
-        elif op == "*":
-            value = num1 * num2
-        elif op == "/":
-            value = num1 / num2
-        elif op == "-":
-            value = num1 - num2
-        elif op == "^":
-            value = math.pow(num1, num2)
-        elif op == "%":
-            value = num1 % num2
-        return value
+def arithmetic(num1, num2, op):
+    """Arithmetic operations are handled here. No evil eval()"""
+    if op == "+":
+        value = num2 + num1
+    elif op == "*":
+        value = num2 * num1
+    elif op == "/":
+        value = num2 / num1
+    elif op == "-":
+        value = num2 - num1
+    elif op == "^":
+        value = math.pow(num2, num1)
+    elif op == "%":
+        value = num2 % num1
+    return value
 
-def isinteger(something):
+def isFloat(something):
     try:
-        something += 1
+        something /= 1
         return True
     except TypeError:
         return False

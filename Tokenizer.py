@@ -15,6 +15,7 @@ class Tokenizer:
         exp = exp.replace(' ','')
         # Mathematical Sin, Cos, Tan functions, decimals and PI are allowed
         validChars = set("sincostanpi.")
+        foundLeftParan = False
         validOutput = True
         functions = ("sin", "cos", "tan")
 
@@ -63,11 +64,12 @@ class Tokenizer:
                     # Thank you dear left paran. You've served your purpose.
                     # It was a pleasure to work with you, but there is no need
                     # for you in RPN. You may go now!
-                    if stack[-1] == "(":
+                    if len(stack) > 0 and stack[-1] == "(":
                         stack.pop()
+                        foundLeftParan = True
 
                     # And now for something completely (un)expected!
-                    if len(stack) == 0:
+                    if len(stack) == 0 and not foundLeftParan:
                         output = "Error: Mismatched parantheses!"
                         validOutput = False
                         break
