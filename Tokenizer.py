@@ -6,8 +6,9 @@ class Tokenizer:
     the resulting output."""
     
     def shunting(self, exp):
-        """Takes an expression in infix notation and converts it to the Reverse
-        Polish Notation (RPN) using Dijkstra's Shunting Yard Algorithm."""
+        """Takes an expression in infix notation and converts it 
+        to Reverse Polish Notation (RPN) using Dijkstra's 
+        Shunting Yard Algorithm."""
         stack = []
         output = []
         tempString = ""
@@ -18,6 +19,11 @@ class Tokenizer:
         foundLeftParan = False
         validOutput = True
         functions = ("sin", "cos", "tan")
+
+        if exp.count("(") != exp.count(")"):
+            output = "Error: Mismatched parantheses!"
+            print(output)
+            return output
 
         # Tokenize the expression char by char
         for i in exp:

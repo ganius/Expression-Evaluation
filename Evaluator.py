@@ -2,14 +2,15 @@ import math
 from Operator import find
 
 class Evaluator:
-    """Yeah"""
+    """Evaluater class"""
     def evaluate(self, tokenList):
         """Takes an expression in RPN notation and evaluates it"""
         tempStack = []
+        print(tokenList)
         try:
             tokenList.reverse()
         except AttributeError:
-            result = "Invalid token list"
+            result = "Error: Invalid tokens!"
             return result
         
         while len(tokenList) > 0:
@@ -19,7 +20,7 @@ class Evaluator:
             else:
                 op = find(i)
                 if len(tempStack) < op.ops:
-                    print("Insufficient values!")
+                    print("Error: Insufficient values!")
                     break
                 else:
                     value = arithmetic(tempStack.pop(), tempStack.pop(), i)
@@ -30,7 +31,7 @@ class Evaluator:
                 return result
 
         if len(tokenList) > 1:
-            result = "User input has too many values"
+            result = "Error: User input has too many values"
             return result
 
 def arithmetic(num1, num2, op):
