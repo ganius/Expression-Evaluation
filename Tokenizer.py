@@ -13,7 +13,10 @@ class Tokenizer:
         output = []
         tempString = ""
         # Get rid of all spaces for easier computation
-        exp = exp.replace(' ','')
+        try:
+            exp = exp.replace(' ','')
+        except AttributeError:
+            return "Invalid type, string expected!"
         # Mathematical Sin, Cos, Tan functions, decimals and PI are allowed
         validChars = set("sincostanpi.")
         foundLeftParan = False

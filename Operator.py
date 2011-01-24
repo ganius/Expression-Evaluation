@@ -21,12 +21,12 @@ left_paran = Operator("l", "(", -1, 0)
 right_paran = Operator("l", ")", -1, 0)
 
 def is_op(symbol):
-    for op in allOperators:
+    for op in Operator.allOperators:
         if op.sym == symbol:
             return True
     return False
 
 def find(symbol):
-    for op in allOperators:
+    for op in Operator.allOperators:
         if op.sym == symbol:
             return op
